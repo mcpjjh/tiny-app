@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> <%= include('./partials/_header') %> </title>
+</head>
+<body>
+
+<% for (let key in urls) { %>
+<li>Short URL</li>
+  <%= key %>
+<li>Long URL</li>
+  <%= urls[key] %>
+<% }  %>
+
+<!-- <a href="url">Shorten a new URL</a> -->
+
+
+
+</body>
+</html>
