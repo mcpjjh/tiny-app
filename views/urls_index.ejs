@@ -5,12 +5,15 @@
 </head>
 <body>
 
-<% for (let key in urls) { %>
-<li>Short URL</li>
-  <%= key %>
-<li>Long URL</li>
-  <%= urls[key] %>
-<% }  %>
+<% for (key in urls) { %>
+  <li>Short URL: <%= key %>
+  <li>Long URL: <%= urls[key] %></li>
+  <form method="POST" action="/urls/<%=key%>/delete">
+    <label>Delete: </label>
+    <input type="submit" value="Delete">
+  </form>
+  <br>
+<% } %>
 
 <!-- <a href="url">Shorten a new URL</a> -->
 

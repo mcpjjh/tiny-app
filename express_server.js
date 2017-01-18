@@ -22,8 +22,15 @@ function generateRandomString(length, characs) {
 }
 const generateShortURL = generateRandomString(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
-app.get("/", (req, res) => {
-  res.end("Hello!");
+app.get("/urls", (req, res) => {
+  // let templateVars = { urls: urlDatabase };
+  res.render("urls_index", { urls: urlDatabase});
+});
+
+app.post("/urls/:id/delete", (req, res) => {
+  // console.log(delete urlDatabase[key]);
+  delete urlDatabase[key];
+  res.redirect('/urls');
 });
 
 app.get("/urls/new", (req, res) => {
@@ -32,9 +39,7 @@ app.get("/urls/new", (req, res) => {
 
 app.post("/urls", (req, res) => {
   var shortURL = generateShortURL;
-  console.log(generateShortURL);
   var longURL = req.body.longURL;
-  console.log(req.body);
   urlDatabase[shortURL] = longURL;
   res.redirect(`/urls/${shortURL}`);
 });
@@ -44,10 +49,6 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-app.get("/urls", (req, res) => {
-  // let templateVars = { urls: urlDatabase };
-  res.render("urls_index", { urls: urlDatabase});
-});
 
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
@@ -66,4 +67,8 @@ app.get("/hello", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
+});
+
+app.get("/", (req, res) => {
+  res.end("Hello!");
 });
