@@ -22,11 +22,16 @@ function generateRandomString(length, characs) {
     result += characs[Math.floor(Math.random() * characs.length)];
    }
     return result;
-}andomString(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+}
 
 app.post("/login", (req, res) => {
   res.cookie("username", req.body.username);
-  res.redirect("/");
+  res.redirect("/urls");
+});
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("username", req.body.username);
+  res.redirect("/urls");
 });
 
 app.get("/urls", (req, res) => {

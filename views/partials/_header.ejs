@@ -4,9 +4,20 @@ Tiny App!
 
 <link href="styles/application.css" rel="stylesheet">
 
+<% if (username) { %>
+
+<%= username %>
+
+  <form method="POST" action="/logout">
+  <input type="submit" value="Log Out">
+  </form>
 
 
-<form method="POST" action="/login">
-<input type = "text" name = "username">
-<input type="submit" value="Sign In">
-</form>
+  <% } else { %>
+
+  <form method="POST" action="/login">
+  <input type = "text" name = "username">
+  <input type="submit" value="Sign In">
+  </form>
+
+<% } %>
