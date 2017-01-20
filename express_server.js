@@ -57,33 +57,7 @@ app.post("/login", (req, res) => {
     }
   }
     res.status(403).send("Access Forbidden")
-    // res.end("Email or password is incorrect.")
 });
-
-// var emailMatch = false;
-// var passwordMatch = false;
-
-//     emailMatch = true
-//   }
-// }
-// if (emailMatch) {
-//   for (var userPassword in userDatabase) {
-//     if (req.body.password === userDatabase[userPassword].id) {
-//       passwordMatch = true
-//     }
-//   }
-// } else if (emailMatch === false) {
-//   res.status(403).send("Access Forbidden")
-// } else {
-//   res.cookie("username", [req.body.id]);
-//     // let user = {
-//     //   id: generateRandomID(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-//     //   email: req.body.email,
-//     //   password: req.body.password
-//     // }
-//   res.redirect("/url");
-// }
-// });
 
 //LOGIN
 
