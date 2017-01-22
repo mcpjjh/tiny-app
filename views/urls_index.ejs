@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <%- include('./partials/_header') %>
-  <br>
-  <br>
-  <br>
-</head>
-<body>
-
-<% for (key in urls) { %>
-
-  <%= key %>  &nbsp; &nbsp;  &#8594;  &nbsp; &nbsp;  <%= urls[key] %>
-  <br>
-  <a href = "/urls/<%=key%>"> Edit </a> &nbsp; &nbsp; &nbsp;
-  <form class = "deleteButton" method = "POST" action = "/urls/<%=key%>/delete">
-    <input type = "submit" value = "Delete">
-  </form>
-  <br>
-  <br>
-<% } %>
-
-<!-- <a href="url">Shorten a new URL</a> -->
-
-<!-- <a href="url">link text</a> -->
-
-</body>
+  <head>
+    <%- include('./partials/_header') %>
+    <br>
+    <br>
+    <br>
+  </head>
+  <body>
+    <% for (key in urls) { %>
+    <%= key %>  &nbsp; &nbsp;  &#8594;  &nbsp; &nbsp;  <a href="<%= `/u/${key}` %>"> <%= urls[key] %>
+    <br>
+    <a href="/urls/<%=key%>"> Edit </a> &nbsp; &nbsp; &nbsp;
+    <form class="deleteButton" method="POST" action="/urls/<%=key%>/delete">
+      <input type="submit" value="Delete">
+    </form>
+    <br>
+    <br>
+  <% } %>
+  </body>
 </html>
