@@ -16,6 +16,12 @@ app.use('/styles', express.static(__dirname + '/styles'));
 
 app.set('view engine', 'ejs');
 
+const urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com",
+  "P8oWzh": "http://www.theweathernetwork.com"
+};
+
 const userDatabase = {
   "userID1" : {
     id: "userID1",
@@ -39,7 +45,7 @@ const characs= generateRandomString(6, '0123456789abcdefghijklmnopqrstuvwxyzABCD
 
 app.get("/login", (req, res) => {
   if (req.session.user_id) {
-    res.redirect("/urls");
+    res.redirect("/");
   } else {
   res.render("urls_login");
   }
@@ -49,7 +55,7 @@ app.post("/login", (req, res) => {
   for (var userEmail in userDatabase) {
     if (req.body.email === userDatabase[userEmail].email && bcrypt.compareSync(req.body.password, userDatabase[userEmail].password)) {
       req.session.user_id = userDatabase[userEmail].id;
-      res.redirect("/urls");
+      res.redirect("/");
     } else {
       res.status(401).send("Error 401: Username or password is incorrect.")
     }
@@ -58,12 +64,12 @@ app.post("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
   req.session = null;
-  res.redirect("/urls");
+  res.redirect("/");
 });
 
 app.get("/register", (req, res) => {
   if (req.session.user_id) {
-    res.redirect("/urls");
+    res.redirect("/");
   } else {
     res.render("urls_register");
   }
@@ -110,8 +116,14 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  userDatabase[req.session.user_id].urls[generateRandomString(6, characs)] = req.body.longURL;
-  res.redirect("/urls");
+  if (userDatabase[req.session.user_id]) {
+    let shortURL = generateRandomString(6, characs)
+    userDatabase[req.session.user_id].urls[shortURL] = req.body.longURL;
+    let shortLink = "/urls/" + shortURL
+    res.redirect(shortLink);
+  } else {
+    res.status(401).send(`Error 401: Access Denied. Log in or register to continue. <br> <br> <a href="/login"> Login </a> <br> <br> <a href="/register"> Register </a>`);
+  }
 });
 
 app.get("/urls/new", (req, res) => {
@@ -149,15 +161,27 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 app.post("/urls/:id/update", (req, res) => {
+  if (!userDatabase[req.session.user_id].urls[req.params.id]) {
+  res.status(404).send("Error 404: Link does not exist.")
+} else if (req.session.user_id === undefined) {
+  res.status(401).send(`Error 401: Access Denied. Log in or register to continue. <br> <br> <a href="/login"> Login </a> <br> <br> <a href="/register"> Register </a>`)
+} else if (userDatabase[req.session.user_id].urls[req.params.id] === undefined) {
+  res.status(403).send("Error 403: Access Denied.")
+} else {
   var shortURL = req.params.id;
   var longURL = req.body.longURL;
   userDatabase[req.session.user_id].urls[shortURL] = longURL;
   res.redirect(`/urls`);
+  }
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = userDatabase[req.session.user_id].urls[req.params.id];
+  if (!req.session.user_id) {
+    res.status(401).send(`Error 401: Access Denied. Log in or register to continue. <br> <br> <a href="/login"> Login </a> <br> <br> <a href="/register"> Register </a>`)
+  } else {
+  let longURL = userDatabase[req.session.user_id].urls[req.params.shortURL];
   res.redirect(longURL);
+  }
 });
 
 app.get("/urls.json", (req, res) => {
