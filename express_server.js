@@ -47,18 +47,22 @@ app.get("/login", (req, res) => {
   if (req.session.user_id) {
     res.redirect("/");
   } else {
-  res.render("urls_login");
+    res.render("urls_login");
   }
 });
 
 app.post("/login", (req, res) => {
+  var emailMatches = false;
+
   for (var userEmail in userDatabase) {
     if (req.body.email === userDatabase[userEmail].email && bcrypt.compareSync(req.body.password, userDatabase[userEmail].password)) {
       req.session.user_id = userDatabase[userEmail].id;
-      res.redirect("/");
-    } else {
-      res.status(401).send("Error 401: Username or password is incorrect.")
     }
+  }
+  if (!emailMatches) {
+    res.redirect("/");
+  } else {
+    res.status(401).send("Error 401: Username or password is incorrect.")
   }
 });
 
@@ -102,6 +106,7 @@ app.post("/register", (req, res) => {
     res.redirect("/urls")
   }
 });
+
 
 app.get("/urls", (req, res) => {
   if (req.session.user_id === undefined) {
