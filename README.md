@@ -9,3 +9,4 @@ The app will allow users to shorten long URLs much like TinyURL.com, bit.ly, and
 1. Clone repository
 2. Type `npm install` in command line.
 3. Type `node express_server.js` in command line.
+4. Open "localhost:8080" in browser.
